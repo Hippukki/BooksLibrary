@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: sqlserver
+    environment:
+      POSTGRES_DB: "librarydb"
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "+X9IaKI4%,o^YxG4X&Uo"
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - testtask
+
+  webapi:
+    image: webapi
+    build:
+      context: .
+      dockerfile: WebAPI/Dockerfile
+    ports:
+      - "80:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__MainConnection=Server=sqlserver;Database=librarydb;Username=user;Password=+X9IaKI4%,o^YxG4X&Uo
+    depends_on:
+      - postgres
+    networks:
+      - testtask
+
+networks:
+  testtask:
+    driver: bridge
