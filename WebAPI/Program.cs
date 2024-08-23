@@ -1,6 +1,5 @@
 using Application;
 using Infrastructure;
-using Presentation;
 using Serilog;
 
 namespace WebAPI;
@@ -12,13 +11,13 @@ public class Program
 
         builder.Services.AddAuthorization();
 
+        builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
         builder.Services
             .AddApplication()
-            .AddInfrastructure()
-            .AddPresentation();
+            .AddInfrastructure(builder.Configuration);
 
         builder.Host.UseSerilog((context, configuration) =>
             configuration.ReadFrom.Configuration(context.Configuration));
