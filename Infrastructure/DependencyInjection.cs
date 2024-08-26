@@ -1,4 +1,6 @@
-﻿using Infrastructure.Data;
+﻿using Domain.Interfaces;
+using Infrastructure.Data;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,10 @@ public static class DependencyInjection
             var connectionString = configuration.GetConnectionString("postgresql");
             options.UseNpgsql(connectionString);
         });
+
+        services.AddScoped<IAuthorsRepository, AuthorsRepository>();
+        services.AddScoped<IBooksRepository, BooksRepository>();
+        services.AddScoped<IPublishersRepository, PublishersRepository>();
 
         return services;
     }
