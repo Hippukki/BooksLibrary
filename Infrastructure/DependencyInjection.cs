@@ -12,11 +12,8 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-        {
-            var connectionString = configuration.GetConnectionString("postgresql");
-            options.UseNpgsql(connectionString);
-        });
-
+            options
+                .UseNpgsql(configuration.GetConnectionString("postgresql")));
         services.AddScoped<IAuthorsRepository, AuthorsRepository>();
         services.AddScoped<IBooksRepository, BooksRepository>();
         services.AddScoped<IPublishersRepository, PublishersRepository>();
