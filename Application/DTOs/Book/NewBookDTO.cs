@@ -1,45 +1,43 @@
-﻿using Application.DTOs.Author;
-using Application.DTOs.Publisher;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.Book;
 
 /// <summary>
-/// DTO книги
+/// DTO для создания новой книги
 /// </summary>
-public class BookDTO
+public class NewBookDTO
 {
-    /// <summary>
-    /// Идентификатор
-    /// </summary>
-    public int Id { get; set; }
-
     /// <summary>
     /// Название
     /// </summary>
+    [Required]
     public string Name { get; set; }
 
     /// <summary>
-    /// Автор
+    /// Идентификатор автора
     /// </summary>
-    public AuthorDTO Author { get; set; }
+    [Required]
+    public int AuthorId { get; set; }
 
     /// <summary>
-    /// Дата публшикации
+    /// Дата публикации
     /// </summary>
     public DateOnly? PublishedIn { get; set; }
 
     /// <summary>
     /// ISBN
     /// </summary>
+    [Required]
     public string ISBN { get; set; }
 
     /// <summary>
-    /// Издатель
+    /// Идентификатор издателя
     /// </summary>
-    public PublisherDTO? Publisher { get; set; }
+    public int? PublisherId { get; set; }
 
     /// <summary>
     /// Количество страниц
     /// </summary>
+    [Required]
     public int PagesCount { get; set; }
 }

@@ -1,8 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Enums;
+
+/// <summary>
+/// Тип ошибки
+/// </summary>
 public enum ErrorTypes
 {
+    /// <summary>
+    /// Нет ошибки
+    /// </summary>
+    None,
+
     /// <summary>
     /// Не найдена запись в базе данных
     /// </summary>
@@ -22,12 +31,6 @@ public enum ErrorTypes
     SaveEntityError,
 
     /// <summary>
-    /// Ошибка при подключении к базе данных
-    /// </summary>
-    [Display(Name = "Ошибка при подключении к базе данных")]
-    DbConnectError,
-
-    /// <summary>
     /// При создании записи в базе данных произошла ошибка
     /// </summary>
     [Display(Name = "При создании записи в базе данных произошла ошибка")]
@@ -43,10 +46,5 @@ public enum ErrorTypes
     /// Ошибка при валидации данных
     /// </summary>
     [Display(Name = "Ошибка при валидации данных")]
-    ValidateError,
-
-    /// <summary>
-    /// Без ошибок
-    /// </summary>
-    None
+    ValidateError
 }

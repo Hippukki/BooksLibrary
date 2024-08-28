@@ -1,7 +1,7 @@
 ﻿using Domain.Abstractions;
 using Domain.Enums;
 using Domain.Interfaces;
-using Domain.QueryResults;
+using Domain.Query;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -38,12 +38,23 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : class
         }
     }
 
-    public virtual async Task<Result<IEnumerable<T>>> GetCollectionAsync(Expression<Func<T, bool>> predicate)
+    public virtual async Task<Result<IEnumerable<T>>> GetCollectionAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[]? includes)
     {
         try
         {
-            var result = await _context.Set<T>().Where(predicate).ToListAsync();
-            if (result is null)
+            IQueryable<T> query = _context.Set<T>().Where(predicate);
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            var result = await query.ToListAsync();
+
+            if (result == null || !result.Any())
                 return new ErrorResult<IEnumerable<T>>(ErrorTypes.NotFound);
 
             return new SuccessResult<IEnumerable<T>>(result);

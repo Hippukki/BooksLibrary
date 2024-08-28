@@ -2,7 +2,7 @@
 using AutoMapper;
 using Domain.Abstractions;
 using Domain.Interfaces;
-using Domain.QueryResults;
+using Domain.Query;
 using MediatR;
 
 namespace Application.Books.Queries.GetBooks;
@@ -19,11 +19,15 @@ public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, Result<IEnume
 
     public async Task<Result<IEnumerable<BookDTO>>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        var getBooksRusult = await _booksRepository.GetCollectionAsync(x => !x.IsDeleted);
-        if (getBooksRusult.HasError)
-            return new ErrorResult<IEnumerable<BookDTO>>(getBooksRusult);
+        var getBooksResult = await _booksRepository.GetCollectionAsync(x =>
+            !x.IsDeleted, 
+            book => book.Author, 
+            book => book.Publisher);
+
+        if (getBooksResult.HasError)
+            return new ErrorResult<IEnumerable<BookDTO>>(getBooksResult);
 
         return new SuccessResult<IEnumerable<BookDTO>>(
-            _mapper.Map<IEnumerable<BookDTO>>(getBooksRusult.ResponseObject));
+            _mapper.Map<IEnumerable<BookDTO>>(getBooksResult.ResponseObject));
     }
 }
