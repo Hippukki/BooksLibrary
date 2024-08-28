@@ -1,7 +1,5 @@
 using Application;
 using Infrastructure;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using WebAPI.Configurations;
