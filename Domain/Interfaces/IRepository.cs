@@ -9,4 +9,5 @@ public interface IRepository<T> where T : class
     Task<Result> SaveItemAsync(T entity);
     Task<Result> UpdateItemAsync(T entity);
     Task<Result> DeleteItemAsync(int Id);
+    Task<Result> ClearTableAsync();
 }

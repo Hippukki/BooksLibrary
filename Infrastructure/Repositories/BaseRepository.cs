@@ -120,4 +120,21 @@ internal abstract class BaseRepository<T> : IRepository<T> where T : class
             return new ErrorResult(ex.Message);
         }
     }
+
+    public virtual async Task<Result> ClearTableAsync()
+    {
+        try
+        {
+            var dbSet = _context.Set<T>();
+            dbSet.RemoveRange(dbSet);
+            await _context.SaveChangesAsync();
+
+            return new SuccessResult();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return new ErrorResult(ex.Message);
+        }
+    }
 }

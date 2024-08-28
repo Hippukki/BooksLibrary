@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Application.Books.Queries.GetFilteredBooks;
+using Application.Books.Commands.DeleteBook;
 
 namespace WebAPI.Controllers;
 
@@ -89,5 +90,16 @@ public class BooksController : ControllerBase
         return ModelState.IsValid 
             ? await _mediator.Send(new SetBookCommand(model)) : 
             new ErrorResult(ErrorTypes.ValidateError, ModelState.GetErrors());
+    }
+
+    /// <summary>
+    /// Удаление книги
+    /// </summary>
+    /// <param name="Id"></param>
+    /// <returns></returns>
+    [HttpDelete("{Id}")]
+    public async Task<Result> Delete([FromRoute] int Id)
+    {
+        return await _mediator.Send(new DeleteBookCommand(Id));
     }
 }
